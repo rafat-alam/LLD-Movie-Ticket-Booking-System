@@ -1,3 +1,6 @@
+import exceptions.EmptyField;
+import exceptions.IdNotFoundException;
+
 import java.util.*;
 
 public class Theatre {
@@ -11,6 +14,15 @@ public class Theatre {
     static int theatreCount = 0;
 
     Theatre(String name, String address, String city) {
+        if(Objects.equals(name, "")) {
+            throw new EmptyField("Theatre name must be there");
+        }
+        if(Objects.equals(address, "")) {
+            throw new EmptyField("Theatre address must be there");
+        }
+        if(Objects.equals(city, "")) {
+            throw new EmptyField("Theatre city must be there");
+        }
         this.id = ++theatreCount;
         this.name = name;
         this.address = address;
@@ -21,11 +33,18 @@ public class Theatre {
     }
 
     static void addScreen(int theatre_id, int screen_id) {
-        listedTheatre.get(theatre_id).screen_ids.add(screen_id);
+        Theatre theatre = listedTheatre.get(theatre_id);
+        if(theatre == null) {
+            throw new IdNotFoundException("Theatre id not found: " + theatre_id);
+        }
+        theatre.screen_ids.add(screen_id);
         System.out.println("Screen added to Theatre with id : " + theatre_id);
     }
 
     static void fetchCity(String city, Date date) {
+        if(Objects.equals(city, "")) {
+            throw new EmptyField("Theatre city must be there");
+        }
         for (int key : listedTheatre.keySet()) {
             Theatre value = listedTheatre.get(key);
             if(Objects.equals(value.city, city)) {

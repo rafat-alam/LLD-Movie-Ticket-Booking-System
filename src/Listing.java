@@ -1,26 +1,47 @@
+import exceptions.*;
+
 public class Listing {
     static void addTheatre(String name, String address, String city) {
-        Theatre temp = new Theatre(name, address, city);
+        try {
+            Theatre temp = new Theatre(name, address, city);
+        } catch (EmptyField e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static void addScreen(int theatre_id, int capacity) {
-        Screen temp = new Screen(theatre_id, capacity);
-        Theatre.addScreen(theatre_id, temp.id);
+        try {
+            Screen temp = new Screen(theatre_id, capacity);
+        } catch (IsZeroOrNegException | IdNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static void addMovie(String name, int duration) {
-        Movie temp = new Movie(name, duration);
+        try {
+            Movie temp = new Movie(name, duration);
+        } catch (EmptyField | IsZeroOrNegException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static void addShow(int movie_id, int screen_id, int d, int m, int y, int hr, int min) {
-        Date date = new Date(d, m, y);
-        Time time = new Time(hr, min);
+        try {
+            Date date = new Date(d, m, y);
+            Time time = new Time(hr, min);
 
-        Show temp = new Show(movie_id, screen_id, date, time);
+            Show temp = new Show(movie_id, screen_id, date, time);
+        } catch (IdNotFoundException | IsZeroOrNegException | YearException | TimeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static void fetchCity(String city, int d, int m, int y) {
-        Date date = new Date(d, m, y);
-        Theatre.fetchCity(city, date);
+        try {
+            Date date = new Date(d, m, y);
+            Theatre.fetchCity(city, date);
+        } catch (EmptyField | IsZeroOrNegException | YearException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

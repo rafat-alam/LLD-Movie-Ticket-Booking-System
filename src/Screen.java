@@ -1,5 +1,9 @@
+import exceptions.IdNotFoundException;
+import exceptions.IsZeroOrNegException;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Screen {
     int id;
@@ -10,6 +14,14 @@ public class Screen {
     static int screenCount = 0;
 
     Screen(int theatreId, int capacity) {
+        if(capacity <= 0) {
+            throw new IsZeroOrNegException("Screen capacity must be positive");
+        }
+        try {
+            Theatre.addScreen(theatreId, screenCount + 1);
+        } catch (IdNotFoundException e) {
+            throw new IdNotFoundException(e.getMessage());
+        }
         this.id = ++screenCount;
         this.theatreId = theatreId;
         this.capacity = capacity;
@@ -18,7 +30,11 @@ public class Screen {
     }
 
     static Screen getById(int screen_id) {
-        return listedScreen.get(screen_id);
+        Screen screen = listedScreen.get(screen_id);
+        if (screen == null) {
+            throw new IdNotFoundException("Screen id not found: " + screen_id);
+        }
+        return screen;
     }
 
     static void fetchScreen(int screen_id) {

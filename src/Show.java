@@ -1,3 +1,5 @@
+import exceptions.IdNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,34 +21,38 @@ public class Show {
         this.date = date;
         this.time = time;
 
-        Movie movie = Movie.getById(movie_id);
-        Screen screen = Screen.getById(screen_id);
+        try {
+            Movie movie = Movie.getById(movie_id);
+            Screen screen = Screen.getById(screen_id);
 
-        int start = time.hr * 60 + time.min;
-        int end = start + movie.duration;
+            int start = time.hr * 60 + time.min;
+            int end = start + movie.duration;
 
-        listedShows.putIfAbsent(screen_id, new HashMap<>());
-        Map<Date, List<Show>> dateMap = listedShows.get(screen_id);
-        dateMap.putIfAbsent(date, new ArrayList<>());
+            listedShows.putIfAbsent(screen_id, new HashMap<>());
+            Map<Date, List<Show>> dateMap = listedShows.get(screen_id);
+            dateMap.putIfAbsent(date, new ArrayList<>());
 
-        List<Show> existingShows = dateMap.get(date);
+            List<Show> existingShows = dateMap.get(date);
 
-        // Check overlap
-        for(Show s : existingShows) {
-            Movie e_movie = Movie.getById(s.movie_id);
+            // Check overlap
+            for(Show s : existingShows) {
+                Movie e_movie = Movie.getById(s.movie_id);
 
-            int sStart = s.time.hr * 60 + s.time.min;
-            int sEnd = sStart + e_movie.duration;
+                int sStart = s.time.hr * 60 + s.time.min;
+                int sEnd = sStart + e_movie.duration;
 
-            if(start < sEnd && sStart < end) {
-                System.out.println("Screen overlaps");
+                if(start < sEnd && sStart < end) {
+                    System.out.println("Screen overlaps");
+                }
             }
+
+            this.id = ++showsCount;
+            existingShows.add(this);
+
+            System.out.println("Show added with id : " + showsCount + ", on Screen : " + screen.id + ", with Movie : " + movie.name);
+        } catch (IdNotFoundException e) {
+            throw new IdNotFoundException(e.getMessage());
         }
-
-        this.id = ++showsCount;
-        existingShows.add(this);
-
-        System.out.println("Show added with id : " + showsCount + ", on Screen : " + screen.id + ", with Movie : " + movie.name);
     }
 
     static void fetchShow(int screen_id, Date date) {
