@@ -1,9 +1,11 @@
+package universal;
+
 import exceptions.TimeException;
 
 public class Time {
-    int hr, min;
+    public int hr, min;
 
-    Time(int hr, int min) {
+    public Time(int hr, int min) {
         if(hr < 0) {
             throw new TimeException("Hour cannot be negative.");
         }

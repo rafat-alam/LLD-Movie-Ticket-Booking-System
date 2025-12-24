@@ -1,3 +1,5 @@
+package admin;
+
 import exceptions.EmptyField;
 import exceptions.IdNotFoundException;
 import exceptions.IsZeroOrNegException;

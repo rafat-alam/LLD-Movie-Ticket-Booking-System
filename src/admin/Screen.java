@@ -1,9 +1,10 @@
+package admin;
+
 import exceptions.IdNotFoundException;
 import exceptions.IsZeroOrNegException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Screen {
     int id;

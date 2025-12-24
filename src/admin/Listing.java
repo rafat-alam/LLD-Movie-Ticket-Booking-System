@@ -1,7 +1,11 @@
+package admin;
+
 import exceptions.*;
+import universal.Date;
+import universal.Time;
 
 public class Listing {
-    static void addTheatre(String name, String address, String city) {
+    public static void addTheatre(String name, String address, String city) {
         try {
             Theatre temp = new Theatre(name, address, city);
         } catch (EmptyField e) {
@@ -9,7 +13,7 @@ public class Listing {
         }
     }
 
-    static void addScreen(int theatre_id, int capacity) {
+    public static void addScreen(int theatre_id, int capacity) {
         try {
             Screen temp = new Screen(theatre_id, capacity);
         } catch (IsZeroOrNegException | IdNotFoundException e) {
@@ -17,7 +21,7 @@ public class Listing {
         }
     }
 
-    static void addMovie(String name, int duration) {
+    public static void addMovie(String name, int duration) {
         try {
             Movie temp = new Movie(name, duration);
         } catch (EmptyField | IsZeroOrNegException e) {
@@ -25,7 +29,7 @@ public class Listing {
         }
     }
 
-    static void addShow(int movie_id, int screen_id, int d, int m, int y, int hr, int min) {
+    public static void addShow(int movie_id, int screen_id, int d, int m, int y, int hr, int min) {
         try {
             Date date = new Date(d, m, y);
             Time time = new Time(hr, min);
@@ -36,7 +40,7 @@ public class Listing {
         }
     }
 
-    static void fetchCity(String city, int d, int m, int y) {
+    public static void fetchCity(String city, int d, int m, int y) {
         try {
             Date date = new Date(d, m, y);
             Theatre.fetchCity(city, date);

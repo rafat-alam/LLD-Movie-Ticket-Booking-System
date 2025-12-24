@@ -1,12 +1,14 @@
+package universal;
+
 import exceptions.IsZeroOrNegException;
 import exceptions.YearException;
 
 import java.util.Objects;
 
 public class Date {
-    int d, m, y;
+    public int d, m, y;
 
-    Date(int d, int m, int y) {
+    public Date(int d, int m, int y) {
         if(d <= 0) {
             throw new IsZeroOrNegException("Date must be positive");
         }
