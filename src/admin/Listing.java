@@ -29,12 +29,12 @@ public class Listing {
         }
     }
 
-    public static void addShow(int movie_id, int screen_id, int d, int m, int y, int hr, int min) {
+    public static void addShow(int movie_id, int screen_id, double ticketPrice, int d, int m, int y, int hr, int min) {
         try {
             Date date = new Date(d, m, y);
             Time time = new Time(hr, min);
 
-            Show temp = new Show(movie_id, screen_id, date, time);
+            Show temp = new Show(movie_id, screen_id, ticketPrice, date, time);
         } catch (IdNotFoundException | IsZeroOrNegException | YearException | TimeException e) {
             System.out.println(e.getMessage());
         }

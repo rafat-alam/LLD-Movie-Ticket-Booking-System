@@ -52,6 +52,9 @@ void main() {
                 System.out.print("Screen Id : ");
                 int screen_id = sc.nextInt();
 
+                System.out.print("Ticket Price : ");
+                double ticketPrice = sc.nextDouble();
+
                 System.out.print("Date : ");
                 int date = sc.nextInt();
 
@@ -68,7 +71,7 @@ void main() {
                 int min = sc.nextInt();
                 sc.nextLine();
 
-                Listing.addShow(movie_id, screen_id, date, month, year, hour, min);
+                Listing.addShow(movie_id, screen_id, ticketPrice, date, month, year, hour, min);
             } else if (x == 5) {
                 System.out.print("City : ");
                 String city = sc.nextLine();

@@ -56,15 +56,8 @@ public class Theatre {
                 System.out.println("Theatre Address : " + value.address);
 
                 for(int screen_id : value.screen_ids) {
-                    System.out.println();
                     Screen.fetchScreen(screen_id);
-                    Show.fetchShow(screen_id, date);
-                    System.out.println();
                 }
-
-                System.out.println();
-                System.out.println("-------------------------------------");
-                System.out.println();
             }
         }
     }

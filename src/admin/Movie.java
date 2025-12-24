@@ -39,4 +39,12 @@ public class Movie {
         }
         return movie;
     }
+
+    static void fetchMovie(int movie_id) {
+        Movie movie = listedMovies.get(movie_id);
+
+        System.out.println("Movie Id : " + movie.id);
+        System.out.println("Movie Name : " + movie.name);
+        System.out.println("Movie Duration : " + movie.duration);
+    }
 }

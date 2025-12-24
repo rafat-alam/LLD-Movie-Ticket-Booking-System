@@ -13,13 +13,16 @@ public class Show {
     int id;
     int movie_id;
     int screen_id;
+    int leftCapacity;
+    double ticketPrice;
     Time time;
     Date date;
 
-    static Map<Integer, Map<Date, List<Show>>> listedShows = new HashMap<>();
+    static Map<Integer, Show> listedShows = new HashMap<>();
     static int showsCount = 0;
 
-    Show(int movie_id, int screen_id, Date date, Time time) {
+    Show(int movie_id, int screen_id, double ticketPrice, Date date, Time time) {
+        this.ticketPrice = ticketPrice;
         this.movie_id = movie_id;
         this.screen_id = screen_id;
         this.date = date;
@@ -29,29 +32,29 @@ public class Show {
             Movie movie = Movie.getById(movie_id);
             Screen screen = Screen.getById(screen_id);
 
+            this.leftCapacity = screen.capacity;
+
             int start = time.hr * 60 + time.min;
             int end = start + movie.duration;
 
-            listedShows.putIfAbsent(screen_id, new HashMap<>());
-            Map<Date, List<Show>> dateMap = listedShows.get(screen_id);
-            dateMap.putIfAbsent(date, new ArrayList<>());
-
-            List<Show> existingShows = dateMap.get(date);
-
             // Check overlap
-            for(Show s : existingShows) {
-                Movie e_movie = Movie.getById(s.movie_id);
+            for(Show s : listedShows.values()) {
+                if(s.date == date) {
+                    Movie e_movie = Movie.getById(s.movie_id);
 
-                int sStart = s.time.hr * 60 + s.time.min;
-                int sEnd = sStart + e_movie.duration;
+                    int sStart = s.time.hr * 60 + s.time.min;
+                    int sEnd = sStart + e_movie.duration;
 
-                if(start < sEnd && sStart < end) {
-                    System.out.println("Screen overlaps");
+                    if(start < sEnd && sStart < end) {
+                        System.out.println("Screen overlaps");
+                    }
                 }
             }
 
             this.id = ++showsCount;
-            existingShows.add(this);
+            listedShows.put(showsCount, this);
+
+            screen.show_ids.add(showsCount);
 
             System.out.println("Show added with id : " + showsCount + ", on Screen : " + screen.id + ", with Movie : " + movie.name);
         } catch (IdNotFoundException e) {
@@ -59,21 +62,17 @@ public class Show {
         }
     }
 
-    static void fetchShow(int screen_id, Date date) {
-        listedShows.putIfAbsent(screen_id, new HashMap<>());
-        Map<Date, List<Show>> dateMap = listedShows.get(screen_id);
-        dateMap.putIfAbsent(date, new ArrayList<>());
+    static void fetchShow(int show_id) {
+        Show show = listedShows.get(show_id);
 
-        List<Show> existingShows = dateMap.get(date);
+        System.out.println("Show Id : " + show.id);
+        Movie.fetchMovie(show.movie_id);
+        System.out.println("Left Seat : " + show.leftCapacity);
+        System.out.println("Ticket Price : Rs." + show.ticketPrice);
+        System.out.println("Show Time : " + show.time.hr + ":" + show.time.min);
+    }
 
-        // Check overlap
-        for(Show s : existingShows) {
-            Movie e_movie = Movie.getById(s.movie_id);
+    public static void locking(int show_id, int no_t) {
 
-            System.out.println("Movie Id : " + e_movie.id);
-            System.out.println("Movie name : " + e_movie.name);
-            System.out.println("Movie Duration : " + e_movie.duration);
-            System.out.println("Time : " + s.time.hr + ":" + s.time.min);
-        }
     }
 }
